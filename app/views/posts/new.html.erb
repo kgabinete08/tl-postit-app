@@ -1,20 +1,4 @@
 <%= render 'shared/content_title', title: 'Create a new post' %>
 
-<div class="well">
-<%= form_for @post do |f| %>
-  <div class="control-group">
-    <%= f.label :title %>
-    <%= f.text_field :title %>
-  </div>
-   <div class="control-group">
-    <%= f.label :url %>
-    <%= f.text_field :url %>
-  </div>
-   <div class="control-group">
-    <%= f.label :description %>
-    <%= f.text_field :description %>
-  </div>
-  <%= f.submit "Create post", class: "btn btn-primary" %>
-<% end %>
-</div>
+<%= render 'form_for' %>
 

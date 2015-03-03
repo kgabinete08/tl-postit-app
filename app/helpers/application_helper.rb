@@ -3,7 +3,7 @@ module ApplicationHelper
     url.starts_with?('http://') ? url : "http://#{url}"
   end
 
-  def fix_time(time)
-    time.strftime("%l:%M%P %b. %e, %Y")
+  def display_time(time)
+    time.try(:strftime, "%l:%M%P %b. %e, %Y")
   end
 end

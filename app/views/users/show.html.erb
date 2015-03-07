@@ -1,0 +1,9 @@
+<%= render 'shared/content_title', title: "Profile: #{current_user.username}" %>
+
+<div class="span8 well">
+  <strong class="text-center">Username: </strong><%= current_user.username %>
+</div>
+
+<% current_user.posts.each do |user| %>
+  
+<% end %>

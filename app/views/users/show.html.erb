@@ -1,9 +1,29 @@
-<%= render 'shared/content_title', title: "Profile: #{current_user.username}" %>
+<%= render 'shared/content_title', title: "Profile: #{@user.username}" %>
 
-<div class="span8 well">
-  <strong class="text-center">Username: </strong><%= current_user.username %>
+<div class="well">
+  <dl class="dl-horizontal">
+    <dt>Username:</dt>
+    <dd><%= @user.username %></dd>
+  </dl>
 </div>
 
-<% current_user.posts.each do |user| %>
-  
+<h5><%= @user.username %>'s Activity</h5>
+
+<ul class="nav nav-tabs">
+  <li class="<%= 'active' if params[:tab].nil? %>">
+    <%= link_to "Posts (#{@user.posts.size})", user_path(@user) %>
+  </li>
+  <li class="<%= 'active' if params[:tab] == 'comments' %>">
+    <%= link_to "Comments (#{@user.comments.size})", user_path(@user, tab: 'comments') %>
+  </li>
+</ul>
+
+<% if params[:tab].nil? %>
+  <% @user.posts.each do |post| %>
+    <%= render 'posts/post', post: post %>
+  <% end %>
+<% elsif params[:tab] == 'comments' %>
+  <% @user.comments.each do |comment| %>
+    <%= render 'comments/comment', comment: comment, show_post: true %>
+  <% end %>
 <% end %>

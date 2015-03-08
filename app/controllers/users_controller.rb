@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:edit, :show]
+  before_action :set_user, only: [:edit, :update, :show]
+  before_action :correct_user, only: [:edit, :update]
 
   def new
     @user = User.new
@@ -19,6 +20,15 @@ class UsersController < ApplicationController
 
   def edit; end
 
+  def update
+    if @user.update(user_params)
+      flash[:notice] = "Your account has been updated."
+      redirect_to root_path
+    else
+      render :edit
+    end
+  end
+
   def show; end
 
   private
@@ -29,5 +39,9 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
+  end
+
+  def correct_user
+    redirect_to root_path if @user != current_user
   end
 end

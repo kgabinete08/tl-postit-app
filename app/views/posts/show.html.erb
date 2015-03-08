@@ -4,15 +4,11 @@
   <% end %>
 </p>
 
-<p>
-  <%= render @post.categories %>
-</p>
+<p><%= render @post.categories %></p>
 
 <%= render "shared/content_title", title: @post.title %>
 
-<p>
-  <%= @post.description %>
-</p>
+<p><%= @post.description %></p>
 <hr/>
 
 <%= form_for [@post, @comment] do |f| %>
@@ -27,10 +23,5 @@
 <h5>Comments:</h5>
 
 <% @post.comments.each do |comment| %>
-  <div class="span8 well">
-    <em>"<%= comment.body %>"</em>
-    <br/>
-    <span class="quiet">by</span> <%= comment.creator.username %>
-    <small>at <%= display_time(comment.created_at) %></small>
-  </div>
+  <%= render 'comments/comment', comment: comment %>
 <% end %>

@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :update]
+  before_action :set_post, only: [:show, :edit, :update, :vote]
   before_action :require_user, except: [:index, :show]
+  before_action :correct_user, only: [:edit, :update]
 
   def index
     @posts = Post.all
@@ -39,6 +40,12 @@ class PostsController < ApplicationController
     end
   end
 
+  def vote
+    Vote.create(voteable: @post, creator: current_user, vote: params[:vote])
+    flash[:notice] = "Your vote was added."
+    redirect_to :back
+  end
+
   private
 
   def post_params
@@ -49,4 +56,7 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
   end
   
+  def correct_user
+    redirect_to root_path if @user != current_user
+  end
 end

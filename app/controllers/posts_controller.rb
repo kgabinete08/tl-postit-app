@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :vote]
-  before_action :require_user, except: [:index, :show]
+  before_action :require_user, except: [:index, :show, :vote]
   before_action :correct_user, only: [:edit, :update]
 
   def index
@@ -55,8 +55,9 @@ class PostsController < ApplicationController
   def set_post
     @post = Post.find(params[:id])
   end
-  
+
   def correct_user
     redirect_to root_path if @user != current_user
   end
 end
+

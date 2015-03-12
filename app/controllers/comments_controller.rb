@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
   before_action :require_user
+
   def create
     @post = Post.find(params[:post_id])
     @comment = @post.comments.build(comment_params)
@@ -11,6 +12,15 @@ class CommentsController < ApplicationController
     else
       render 'posts/show'
     end
+  end
+
+  def vote
+    @post = Post.find(params[:post_id])
+    @comment = @post.comments.find(params[:id])
+
+    Vote.create(voteable: @comment, creator: current_user, vote: params[:vote])
+    flash[:notice] = "Your vote was added."
+    redirect_to :back
   end
 
   private

@@ -4,4 +4,16 @@ class Comment < ActiveRecord::Base
   has_many :votes, as: :voteable
 
   validates :body, presence: :true
+
+  def upvotes
+    self.votes.where(vote: true).size
+  end
+
+  def downvotes
+    self.votes.where(vote: false).size
+  end
+
+  def vote_tally
+    upvotes - downvotes
+  end
 end

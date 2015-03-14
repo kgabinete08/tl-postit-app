@@ -1,8 +1,7 @@
 class CommentsController < ApplicationController
-  before_action :require_user
+  before_action :require_user, :set_post
 
   def create
-    @post = Post.find(params[:post_id])
     @comment = @post.comments.build(comment_params)
     @comment.creator = current_user
 
@@ -10,12 +9,12 @@ class CommentsController < ApplicationController
       flash[:notice] = "Your comment was added."
       redirect_to post_path(@post)
     else
-      render 'posts/show'
+      flash[:warning] = "Comment field cannot be blank."
+      redirect_to :back
     end
   end
 
   def vote
-    @post = Post.find(params[:post_id])
     @comment = @post.comments.find(params[:id])
 
     vote = Vote.create(voteable: @comment, creator: current_user, vote: params[:vote])
@@ -30,6 +29,10 @@ class CommentsController < ApplicationController
   end
 
   private
+
+  def set_post
+    @post = Post.find(params[:post_id])
+  end
 
   def comment_params
     params.require(:comment).permit(:body)

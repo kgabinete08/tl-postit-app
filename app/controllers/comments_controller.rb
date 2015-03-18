@@ -9,23 +9,24 @@ class CommentsController < ApplicationController
       flash[:notice] = "Your comment was added."
       redirect_to post_path(@post)
     else
-      flash[:warning] = "Comment field cannot be blank."
+      flash[:error] = "Comment field cannot be blank."
       redirect_to :back
     end
   end
 
   def vote
     @comment = @post.comments.find(params[:id])
+    @vote = Vote.create(voteable: @comment, creator: current_user, vote: params[:vote])
 
-    vote = Vote.create(voteable: @comment, creator: current_user, vote: params[:vote])
-
-    if vote.valid?
-      flash[:notice] = "Your vote was added."
-    else
-      flash[:error] = "You can only vote on this comment once."
+    respond_to do |format|
+      if @vote.valid?
+        format.html { redirect_to :back, notice: "Your vote was added." }
+        format.js
+      else
+        format.html { redirect_to :back, alert: "You can only vote once." }
+        format.js
+      end
     end
-
-    redirect_to :back
   end
 
   private

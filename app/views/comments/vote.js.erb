@@ -1,0 +1,7 @@
+$("#post_<%= @comment.post.id %>_comment_<%= @comment.id %>_votes").html("<%= @comment.vote_tally %>");
+
+<% if @vote.valid? %>
+  $("#flash").html("<%=j render partial: 'shared/vote_success' %>");
+<% else %>
+  $("#flash").html("<%=j render partial: 'shared/vote_error' %>");
+<% end %>

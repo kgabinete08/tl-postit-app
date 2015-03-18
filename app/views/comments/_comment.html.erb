@@ -1,21 +1,24 @@
 <% show_post ||= false %>
 
+
+<div id="flash" class="span12"></div>
+
 <div class="row">
 <% if logged_in? %>
   <div class="span0 well text-center">
-    <%= link_to vote_post_comment_path(comment.post, comment, vote: true), method: :post do %>
+    <%= link_to vote_post_comment_path(comment.post, comment, vote: true), method: :post, remote: true do %>
       <i class="icon-arrow-up"></i>
     <% end%>
     <br/>
-      <%= comment.vote_tally %> votes
+      <span id="post_<%= comment.post.id %>_comment_<%= comment.id %>_votes"><%= comment.vote_tally %></span> votes
     <br/>
-    <%= link_to vote_post_comment_path(comment.post, comment, vote: false), method: :post do %>
+    <%= link_to vote_post_comment_path(comment.post, comment, vote: false), method: :post, remote: true do %>
       <i class="icon-arrow-down"></i>
     <% end %>
   </div>
 <% else %>
   <div class="span0 well text-center">
-    <%= comment.vote_tally %> votes
+    <span><%= comment.vote_tally %> votes</span>
   </div>
 <% end %>
   <div class="span8 well">

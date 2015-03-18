@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update, :show]
-  before_action :correct_user, only: [:edit, :update]
+  before_action :require_correct_user, only: [:edit, :update]
 
   def new
     @user = User.new
@@ -41,7 +41,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  def correct_user
+  def require_correct_user
     redirect_to root_path if @user != current_user
   end
 end

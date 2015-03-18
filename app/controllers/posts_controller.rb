@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :vote]
   before_action :require_user, except: [:index, :show, :vote]
-  before_action :correct_user, only: [:edit, :update]
+  before_action :require_correct_user, only: [:edit, :update]
 
   def index
     @posts = Post.all
@@ -20,11 +20,14 @@ class PostsController < ApplicationController
     @post = Post.new(post_params)
     @post.creator = current_user
     
-    if @post.save
-      flash[:notice] = "Your post was created."
-      redirect_to posts_path
-    else
-      render 'new'
+    respond_to do |format|
+      if @post.save
+        format.html { redirect_to posts_path, notice: "Your post was created." }
+        format.js
+      else
+        format.html { render 'new' }
+        format.js
+      end
     end
   end
 
@@ -41,15 +44,17 @@ class PostsController < ApplicationController
   end
 
   def vote
-    vote = Vote.create(voteable: @post, creator: current_user, vote: params[:vote])
+    @vote = Vote.create(voteable: @post, creator: current_user, vote: params[:vote])
     
-    if vote.valid?
-      flash[:notice] = "Your vote was added."
-    else
-      flash[:error] = "You can only vote on this post once."
+    respond_to do |format|
+      if @vote.valid?
+        format.html { redirect_to :back, notice: "Your vote was added." }
+        format.js
+      else
+        format.html { redirect_to :back, alert: "You can only vote once." }
+        format.js
+      end
     end
-
-    redirect_to :back
   end
 
   private
@@ -62,7 +67,7 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
   end
 
-  def correct_user
+  def require_correct_user
     redirect_to root_path if @user != current_user
   end
 end

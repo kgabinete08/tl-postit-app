@@ -1,4 +1,4 @@
-$("#post_<%= @post.id %>_votes").html("<%= @post.vote_tally %>");
+$("#post-<%= @post.slug %>-votes").html("<%= @post.vote_tally %>");
 
 <% if @vote.valid? %>
   $("#flash").html("<%=j render partial: 'shared/vote_success' %>");

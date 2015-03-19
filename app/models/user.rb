@@ -7,4 +7,14 @@ class User < ActiveRecord::Base
   validates :username, presence: true, uniqueness: true
   validates :password, confirmation: true, on: :create, length: {minimum: 5}
   validates :password_confirmation, presence: true, on: :create
+
+  before_save :generate_slug
+
+  def to_param
+    self.slug
+  end
+
+  def generate_slug
+    self.slug = self.username.gsub(" ", "-").downcase
+  end
 end

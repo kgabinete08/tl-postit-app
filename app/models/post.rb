@@ -23,7 +23,11 @@ class Post < ActiveRecord::Base
     upvotes - downvotes
   end
 
+  def to_param
+    self.slug
+  end
+
   def generate_slug
-    self.slug = self.title.gsub(regex).downcase
+    self.slug = self.title.gsub(" ", "-").downcase
   end
 end

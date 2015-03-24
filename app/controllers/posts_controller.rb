@@ -34,7 +34,6 @@ class PostsController < ApplicationController
   def edit; end
 
   def update
-
     if @post.update(post_params)
       flash[:notice] = "The post was updated"
       redirect_to post_path(@post)
@@ -68,7 +67,10 @@ class PostsController < ApplicationController
   end
 
   def require_correct_user
-    redirect_to root_path if @user != current_user
+    if @post.creator != current_user
+      flash[:error] = "You do not have the permission to do that."
+      redirect_to root_path
+    end unless current_user.admin?
   end
 end
 

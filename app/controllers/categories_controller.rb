@@ -1,5 +1,7 @@
 class CategoriesController < ApplicationController
-  before_action :require_user, only: [:create]
+  before_action :require_user, only: [:new, :create]
+  before_action :require_admin, only: [:new, :create] 
+
   def new
     @category = Category.new
   end
@@ -24,5 +26,4 @@ class CategoriesController < ApplicationController
   def category_params
     params.require(:category).permit(:name)
   end
-
 end

@@ -5,8 +5,10 @@
 </p>
 
 <p><%= render @post.categories %></p>
+<br/>
 
-<%= render "shared/content_title", title: @post.title %>
+<p class="lead"><%= link_to @post.title, fix_url(@post.url) %></p>
+<hr/>
 
 <p><%= @post.description %></p>
 <hr/>
